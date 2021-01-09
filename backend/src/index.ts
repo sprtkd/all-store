@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('combined'));
 
-app.get('/', (req, res) => res.send("Hello from Elec"));
+app.get('/', (req, res) => res.send("Hello from allStore server"));
 app.use('/api', routerMain)
 app.use((err: any, req: any, res: any, next: any) => { handleError(err, res) });
 app.all('*', (req, res) => { handle404(res) });
