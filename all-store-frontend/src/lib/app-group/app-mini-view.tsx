@@ -1,6 +1,5 @@
 import {
   Card,
-  ButtonBase,
   CardContent,
   CardMedia,
   makeStyles,
@@ -13,25 +12,27 @@ import GetAppRoundedIcon from "@material-ui/icons/GetAppRounded";
 import StarsRoundedIcon from "@material-ui/icons/StarsRounded";
 import PlayForWorkRoundedIcon from "@material-ui/icons/PlayForWorkRounded";
 import { humanReadableSize } from "../utils/general-utils";
-
-export interface AppMiniDetails {
-  id: string;
-  name: string;
-  icon: string;
-  stars: number;
-  downloads: number;
-  size: number;
-}
+import { AppMiniDetails } from "./models/app-models";
 
 const useStyles = makeStyles({
   root: {
+    minWidth: 200,
     width: 200,
-    borderRadius: 15,
-    boxShadow: "1px 1px 5px 0px rgb(187 187 187)",
-    "&:hover": { boxShadow: "2px 2px 8px 1px rgb(187 187 187)" },
+    borderRadius: 20,
+    background: "#f0f0f0",
+    boxShadow: "6px 6px 10px #d1d1d1, -6px -6px 10px #ffffff",
+    "&:hover": {
+      boxShadow: "4px 4px 5px #d1d1d1, -4px -4px 5px #ffffff",
+    },
+    "&:active": {
+      boxShadow: "1px 1px 2px #d1d1d1, -1px -1px 2px #ffffff",
+    },
+    cursor: "pointer",
+    margin: 15,
   },
   content: {
     paddingTop: 8,
+    textAlign: "center",
   },
   media: {
     margin: "auto",
@@ -41,7 +42,7 @@ const useStyles = makeStyles({
   },
   appname: {
     fontWeight: 700,
-    color: "#8c8c8c",
+    color: "#5e5e5e",
     fontSize: 20,
     height: 50,
     overflow: "hidden",
@@ -57,10 +58,14 @@ const buttonStyles = makeStyles({
   rating: {
     backgroundColor: "#ffffcc",
     border: "2px solid #ffb700",
+    color: "#595959",
+    fontWeight: 600,
   },
   totDownloads: {
     backgroundColor: "#e1ffd8",
     border: "2px solid #28e800",
+    color: "#595959",
+    fontWeight: 600,
   },
 });
 
@@ -116,25 +121,25 @@ function formattedStars(stars: number) {
 function AppMiniView(props: AppMiniDetails) {
   const classes = useStyles();
   return (
-    <ButtonBase>
-      <Card className={classes.root}>
-        <CardMedia
-          className={classes.media}
-          image={props.icon}
-          title={props.name}
-        />
-        <CardContent className={classes.content}>
-          <Typography variant="h5" gutterBottom className={classes.appname}>
-            {props.name}
-          </Typography>
+    <Card className={classes.root}>
+      <CardMedia
+        className={classes.media}
+        image={props.icon}
+        title={props.name}
+      />
+      <CardContent className={classes.content}>
+        <Typography variant="h5" gutterBottom className={classes.appname}>
+          {props.name}
+        </Typography>
+        <div>
           <Typography variant="h6" gutterBottom>
             {formattedStars(props.stars)}&nbsp;
             {formattedDowloads(props.downloads)}
           </Typography>
           {downloadButton(props.size)}
-        </CardContent>
-      </Card>
-    </ButtonBase>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -20,14 +20,12 @@ const useStyles = makeStyles({
   },
   appList: {
     display: "flex",
-    flexFlow: "row nowrap",
-    overflowX: "auto",
+    flexFlow: "row wrap",
     padding: 1,
-    "&::-webkit-scrollbar": {},
   },
 });
 
-function HorizontalAppList(props: AppList) {
+function GridAppList(props: AppList) {
   const classes = useStyles();
   const listHeader = (appcount: number) => {
     return (
@@ -53,4 +51,4 @@ function HorizontalAppList(props: AppList) {
   );
 }
 
-export default HorizontalAppList;
+export default GridAppList;
