@@ -3,8 +3,9 @@ import HorizontalAppList from "./lib/app-group/app-list-horizontal";
 import "./app.css";
 import GridAppList from "./lib/app-group/app-list-grid";
 import { AppMiniDetails } from "./lib/app-group/models/app-models";
-import BigAppName from "./lib/microui/big-appname";
-import BigSearch from "./lib/microui/big-search";
+import Landing from "./lib/harness/Landing";
+import Footer from "./lib/harness/Footer";
+import SearchAppBar from "./lib/harness/Appbar";
 
 function getDummyAppList(): AppMiniDetails[] {
   let list: AppMiniDetails[] = [
@@ -78,8 +79,8 @@ function getDummyAppList(): AppMiniDetails[] {
 function App() {
   return (
     <div className="baseApp">
-      <BigAppName />
-      <BigSearch />
+      <SearchAppBar />
+      <Landing />
       <HorizontalAppList
         appList={getDummyAppList()}
         listName="Top New"
@@ -91,6 +92,7 @@ function App() {
         listName="Top New"
         listDescription="Exciting new apps"
       />
+      <Footer />
     </div>
   );
 }

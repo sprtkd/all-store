@@ -4,7 +4,7 @@ import { AppList } from "./models/app-ui-models";
 import React from "react";
 const useStyles = makeStyles({
   root: {
-    padding: 1,
+    padding: 5,
   },
   heading: {
     padding: 15,
