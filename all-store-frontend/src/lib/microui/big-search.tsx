@@ -8,7 +8,11 @@ function BigSearch() {
         <div className="finder__outer">
           <div className="finder__inner">
             <SearchIcon className="finder__icon" fontSize="large" />
-            <input className="finder__input" type="text" />
+            <input
+              className="finder__input"
+              type="text"
+              placeholder="What's on your mind?"
+            />
           </div>
         </div>
       </div>

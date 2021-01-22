@@ -31,12 +31,12 @@ const useStyles = makeStyles({
     margin: 15,
   },
   content: {
-    paddingTop: 8,
+    paddingTop: 10,
     textAlign: "center",
   },
   media: {
     margin: "auto",
-    marginTop: 15,
+    marginTop: 23,
     height: 100,
     width: 100,
   },
@@ -76,7 +76,7 @@ function formattedDowloads(downloads: number) {
       <Tooltip title="Downloads" arrow placement="left">
         <Chip
           icon={<PlayForWorkRoundedIcon />}
-          label={humanReadableSize(downloads)}
+          label={humanReadableSize(downloads, false)}
           className={classes.totDownloads}
         />
       </Tooltip>

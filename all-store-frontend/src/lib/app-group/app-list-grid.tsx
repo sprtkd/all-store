@@ -4,7 +4,7 @@ import { AppList } from "./models/app-ui-models";
 import React from "react";
 const useStyles = makeStyles({
   root: {
-    padding: 5,
+    padding: 10,
   },
   heading: {
     padding: 15,
@@ -44,7 +44,7 @@ function GridAppList(props: AppList) {
       {listHeader(props.appList.length)}
       <div className={classes.appList}>
         {props.appList.map((el) => (
-          <AppMiniView {...el} />
+          <AppMiniView {...el} key={el.id} />
         ))}
       </div>
     </div>

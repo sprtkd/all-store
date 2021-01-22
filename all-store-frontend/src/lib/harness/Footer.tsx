@@ -4,10 +4,11 @@ const useStyles = makeStyles({
   root: {
     textAlign: "center",
     margin: "auto",
-    backgroundColor: "#2b2b2b",
+    backgroundColor: "#454545",
     color: "white",
-    padding: 10,
+    padding: 15,
     marginTop: 15,
+    boxShadow: " 0px -5px 15px 1px rgba(0,0,0,0.25)",
   },
 });
 
