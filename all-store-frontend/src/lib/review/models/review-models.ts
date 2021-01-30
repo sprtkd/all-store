@@ -7,7 +7,14 @@ export interface Review {
     rating: number;
 }
 
+export interface RatingModel {
+    ratingid: string,
+    value: number,
+    isEditable: boolean
+}
+
 export const reviewLabels: { [index: string]: string } = {
+    0: "Unrated",
     0.5: "Useless",
     1: "Bad",
     1.5: "Very Poor",
