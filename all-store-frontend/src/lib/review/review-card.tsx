@@ -31,7 +31,8 @@ const useStyles = makeStyles({
         padding: 10
     },
     subheader: {
-        display: "inline-flex",
+        display: "flex",
+        flexWrap: "wrap",
         marginBottom: 10
     },
     subheaderItems: {
