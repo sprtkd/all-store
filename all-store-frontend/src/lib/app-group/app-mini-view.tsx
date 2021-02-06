@@ -20,6 +20,7 @@ const useStyles = makeStyles({
     width: 200,
     borderRadius: 20,
     background: "#f0f0f0",
+    transition: "all 500ms cubic-bezier(0.4, 0, 0.2, 1)",
     boxShadow: "6px 6px 10px #d1d1d1, -6px -6px 10px #ffffff",
     "&:hover": {
       background: "#ffffff",

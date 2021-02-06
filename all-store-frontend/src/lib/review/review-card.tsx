@@ -20,6 +20,7 @@ const useStyles = makeStyles({
         justifyContent: "center",
         background: "#f0f0f0",
         boxShadow: "6px 6px 10px #d1d1d1, -6px -6px 10px #ffffff",
+        transition: "all 500ms cubic-bezier(0.4, 0, 0.2, 1)",
         "&:hover": {
             background: "#ffffff",
             boxShadow: "4px 4px 5px #d1d1d1, -4px -4px 5px #ffffff",
