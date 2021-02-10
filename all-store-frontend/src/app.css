@@ -1,3 +1,7 @@
 .baseApp {
     background-color: #f0f0f0;
 }
+
+.baseDiv {
+    min-height: 85vh;
+}

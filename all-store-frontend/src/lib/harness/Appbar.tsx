@@ -2,7 +2,7 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import LocalMallIcon from '@material-ui/icons/LocalMall';
 import InputBase from "@material-ui/core/InputBase";
 import {
   createStyles,
@@ -12,6 +12,8 @@ import {
 } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,12 +23,18 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
+    titleDiv: {
       flexGrow: 1,
       display: "none",
+
       [theme.breakpoints.up("sm")]: {
         display: "block",
       },
+    },
+    title: {
+      color: "white",
+      textTransform: "none",
+      fontSize: 20,
     },
     search: {
       position: "relative",
@@ -61,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("sm")]: {
-        width: "12ch",
+        width: "15ch",
         "&:focus": {
           width: "20ch",
         },
@@ -85,15 +93,18 @@ export default function Appbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            AllStore
-          </Typography>
+          <div className={classes.titleDiv} >
+            <Button className={classes.title} component={Link} to={'/'} startIcon={<LocalMallIcon />}>
+              AllStore
+          </Button>
+          </div>
+
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Search AllStore…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

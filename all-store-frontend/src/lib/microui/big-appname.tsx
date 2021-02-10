@@ -1,6 +1,11 @@
 import "./neutext.css";
-function BigAppName() {
-  return <div className="bigAppName neu-text">AllStore</div>;
+
+interface Props {
+  namestring: string;
 }
 
-export default BigAppName;
+function BigText(props: Props) {
+  return <div className="bigAppName neu-text">{props.namestring}</div>;
+}
+
+export default BigText;

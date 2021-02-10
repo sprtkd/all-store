@@ -1,4 +1,4 @@
-import BigAppName from "../microui/big-appname";
+import BigText from "../microui/big-appname";
 import BigSearch from "../microui/big-search";
 
 import { makeStyles } from "@material-ui/core";
@@ -17,7 +17,7 @@ function Landing() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <BigAppName />
+      <BigText namestring={'AllStore'} />
       <br />
       <BigSearch />
     </div>
