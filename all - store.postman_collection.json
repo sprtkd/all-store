@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "7e1f95a9-b48f-4875-bde3-eeb024fd4906",
+		"name": "all - store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User - Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"vivu\",\r\n    \"name\": \"Vivek\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"contact\": \"1234567890\",\r\n    \"password\": \"Testtr1!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				},
+				"description": "users will be able to register"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Login",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"Testtr1!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				},
+				"description": "users will be able to login. It return a jwt token in the response header as \"access-token\""
+			},
+			"response": []
+		},
+		{
+			"name": "User - Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user"
+					]
+				},
+				"description": "to get the details of an existing user against a valid email"
+			},
+			"response": []
+		}
+	]
+}
