@@ -13,7 +13,11 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
+import SideDrawer from "./SideDrawer";
+import ProgressContext from "./ProgressContext";
+import { AccountCircle } from "@material-ui/icons";
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,9 +84,20 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Appbar() {
   const classes = useStyles();
+  const [values, setValues] = React.useState({
+    sideBarState: false,
+    isUserLoggedIn: false,
+  });
 
+  const toggleDrawer = (open: boolean) => (event: any) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setValues({ ...values, sideBarState: open });
+  };
   return (
     <div className={classes.root}>
+      <SideDrawer sidebarState={values.sideBarState} callbackSidebarToggle={toggleDrawer} isLoggenIn={values.isUserLoggedIn} />
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -90,6 +105,7 @@ export default function Appbar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
@@ -98,13 +114,12 @@ export default function Appbar() {
               AllStore
           </Button>
           </div>
-
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search AllStore…"
+              placeholder="Search AllStore"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -112,8 +127,27 @@ export default function Appbar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
+          &nbsp;&nbsp;&nbsp;
+          {profileIcon(values.isUserLoggedIn)}
         </Toolbar>
+
       </AppBar>
+      <ProgressContext.Consumer>
+        {({ isLoading, setValue }) => (
+          isLoading && <LinearProgress />
+        )}
+      </ProgressContext.Consumer>
     </div>
   );
+}
+
+function profileIcon(login: boolean) {
+  return (
+    <div>
+      { login ? (
+        <IconButton color="inherit" component={Link} to="/user"
+        ><AccountCircle />
+        </IconButton>) :
+        <Button color="inherit" component={Link} to="/user">Login</Button>}
+    </div>)
 }

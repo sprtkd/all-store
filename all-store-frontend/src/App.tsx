@@ -10,24 +10,35 @@ import {
   Route, Switch
 } from "react-router-dom";
 import Page404 from "./lib/harness/404";
-import TemporaryDrawer from "./lib/harness/SideDrawer";
+import ProgressContext from "./lib/harness/ProgressContext";
 
 function App() {
+  const [values, setValues] = React.useState({
+    sideBarState: false,
+    progressBarLoading: false
+  });
+
+  const handleProgress = (isloading: boolean) => {
+    setValues({ ...values, progressBarLoading: isloading });
+  };
   return (
     <div className="baseApp">
-      <BrowserRouter>
-        <Appbar />
-        <TemporaryDrawer />
-        <div className="baseDiv">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/user" exact component={UserLoginRegister} />
-            <Route path="/reviews" exact component={ReviewList} />
-            <Route path="/" component={Page404} />
-          </Switch>
-        </div>
-        <Footer />
-      </BrowserRouter>
+      <ProgressContext.Provider
+        value={{ isLoading: values.progressBarLoading, setValue: handleProgress }}
+      >
+        <BrowserRouter>
+          <Appbar />
+          <div className="baseDiv">
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/user" exact component={UserLoginRegister} />
+              <Route path="/reviews" exact component={ReviewList} />
+              <Route path="/" component={Page404} />
+            </Switch>
+          </div>
+          <Footer />
+        </BrowserRouter>
+      </ProgressContext.Provider>
     </div>
   );
 }
