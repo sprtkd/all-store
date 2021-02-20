@@ -13,7 +13,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import React from "react";
+import React, { useContext } from "react";
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -26,6 +26,9 @@ import { loginValidationSchema, registerValidationSchema } from "./utils/user-ut
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { red } from '@material-ui/core/colors';
 import { loginUserApi, registerUserApi } from "./utils/user-api";
+import ProgressContext from "../harness/ProgressContext";
+import UserContext from "./utils/UserContext";
+import ToastContext from "../harness/ToastContext";
 
 const useStyles = makeStyles({
     root: {
@@ -85,7 +88,19 @@ const useStyles = makeStyles({
     }
 });
 
+
+
 function UserLoginDiv() {
+    let progressBar = useContext(ProgressContext);
+    let userContext = useContext(UserContext);
+    let toastContext = useContext(ToastContext);
+    function onLogin(msg: string, stat: boolean) {
+        toastContext.setValue({
+            severity: stat ? "success" : "error",
+            state: true,
+            text: msg
+        });
+    }
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -93,7 +108,20 @@ function UserLoginDiv() {
         },
         validationSchema: loginValidationSchema,
         onSubmit: (values) => {
-            loginUserApi(values.email, values.password)
+            progressBar.setValue(true);
+            loginUserApi(values.email, values.password).then(function (response) {
+                if (response.loggedin) {
+                    onLogin(response.msg, true);
+                    userContext.setValue({
+                        username: "abc",
+                        auth: response.token,
+                        isLoggedIn: true
+                    });
+                } else {
+                    onLogin(response.msg, false);
+                }
+                progressBar.setValue(false);
+            })
         },
     });
     const classes = useStyles();

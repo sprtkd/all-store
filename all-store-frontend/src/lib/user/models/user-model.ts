@@ -5,3 +5,9 @@ export interface User {
     contact: string;
     password: string;
 }
+
+export interface UiUser {
+    isLoggedIn: boolean;
+    username: string;
+    auth: string;
+}

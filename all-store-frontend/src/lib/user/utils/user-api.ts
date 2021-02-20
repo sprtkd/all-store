@@ -1,13 +1,21 @@
 import { createUser } from "./user-utils";
 import axios from "axios";
+import { BACKEND_API } from "../../utils/env";
+
+const LOGIN_URI = "/user/login";
+
+const SUCCESS_LOGIN = "Successfully logged in.";
+const FAILED_LOGIN = "Failed to login."
 
 export async function loginUserApi(email: string, password: string) {
-    alert(JSON.stringify(createUser(email, password), null, 2));
+    let loginUser = createUser(email, password);
     try {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-        console.log(response.data);
+        const response = await axios.post(BACKEND_API + LOGIN_URI, loginUser);
+        console.log(SUCCESS_LOGIN);
+        return { loggedin: true, msg: SUCCESS_LOGIN, user: response.data, token: response.headers['access-token'] };
     } catch (error) {
-        console.error(error);
+        console.error(FAILED_LOGIN + " " + error);
+        return { loggedin: false, msg: FAILED_LOGIN + " " + error.response.status + " | " + error.response.data };
     }
 }
 

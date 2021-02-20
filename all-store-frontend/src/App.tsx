@@ -4,42 +4,55 @@ import Footer from "./lib/harness/Footer";
 import Appbar from "./lib/harness/Appbar";
 import Home from "./lib/routes/home";
 import ReviewList from "./lib/review/review-list";
-import UserLoginRegister from "./lib/user/user-login-register";
 import {
   BrowserRouter,
   Route, Switch
 } from "react-router-dom";
 import Page404 from "./lib/harness/404";
 import ProgressContext from "./lib/harness/ProgressContext";
+import UserPage from "./lib/routes/User";
+import UserContext from "./lib/user/utils/UserContext";
+import { UiUser } from "./lib/user/models/user-model";
+import { Toast, ToastProp } from "./lib/harness/Toast";
+import ToastContext from "./lib/harness/ToastContext";
 
 function App() {
-  const [values, setValues] = React.useState({
-    sideBarState: false,
-    progressBarLoading: false
+  const [progressBarLoading, setProgressBarLoading] = React.useState(false);
+  const [toaster, setToaster] = React.useState<ToastProp>({
+    severity: "info",
+    state: false,
+    text: "string"
+  });
+  const [userLogin, setUserLogin] = React.useState<UiUser>({
+    isLoggedIn: false,
+    username: "",
+    auth: ""
   });
 
-  const handleProgress = (isloading: boolean) => {
-    setValues({ ...values, progressBarLoading: isloading });
-  };
   return (
     <div className="baseApp">
-      <ProgressContext.Provider
-        value={{ isLoading: values.progressBarLoading, setValue: handleProgress }}
-      >
-        <BrowserRouter>
-          <Appbar />
-          <div className="baseDiv">
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/user" exact component={UserLoginRegister} />
-              <Route path="/reviews" exact component={ReviewList} />
-              <Route path="/" component={Page404} />
-            </Switch>
-          </div>
-          <Footer />
-        </BrowserRouter>
-      </ProgressContext.Provider>
-    </div>
+      <UserContext.Provider value={{ user: userLogin, setValue: setUserLogin }}>
+        <ToastContext.Provider value={{ toaster: toaster, setValue: setToaster }}>
+          <ProgressContext.Provider
+            value={{ isLoading: progressBarLoading, setValue: setProgressBarLoading }}
+          >
+            <BrowserRouter>
+              <Appbar />
+              <Toast />
+              <div className="baseDiv">
+                <Switch>
+                  <Route path="/" exact component={Home} />
+                  <Route path="/user" exact component={UserPage} />
+                  <Route path="/reviews" exact component={ReviewList} />
+                  <Route path="/" component={Page404} />
+                </Switch>
+              </div>
+              <Footer />
+            </BrowserRouter>
+          </ProgressContext.Provider>
+        </ToastContext.Provider>
+      </UserContext.Provider>
+    </div >
   );
 }
 

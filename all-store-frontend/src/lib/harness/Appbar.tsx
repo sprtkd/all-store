@@ -17,6 +17,7 @@ import { Button, LinearProgress } from "@material-ui/core";
 import SideDrawer from "./SideDrawer";
 import ProgressContext from "./ProgressContext";
 import { AccountCircle } from "@material-ui/icons";
+import UserContext from "../user/utils/UserContext";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -85,8 +86,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Appbar() {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    sideBarState: false,
-    isUserLoggedIn: false,
+    sideBarState: false
   });
 
   const toggleDrawer = (open: boolean) => (event: any) => {
@@ -97,7 +97,7 @@ export default function Appbar() {
   };
   return (
     <div className={classes.root}>
-      <SideDrawer sidebarState={values.sideBarState} callbackSidebarToggle={toggleDrawer} isLoggenIn={values.isUserLoggedIn} />
+      <SideDrawer sidebarState={values.sideBarState} callbackSidebarToggle={toggleDrawer} />
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -128,7 +128,7 @@ export default function Appbar() {
             />
           </div>
           &nbsp;&nbsp;&nbsp;
-          {profileIcon(values.isUserLoggedIn)}
+          <ProfileIcon />
         </Toolbar>
 
       </AppBar>
@@ -141,13 +141,20 @@ export default function Appbar() {
   );
 }
 
-function profileIcon(login: boolean) {
+function ProfileIcon() {
   return (
     <div>
-      { login ? (
-        <IconButton color="inherit" component={Link} to="/user"
-        ><AccountCircle />
-        </IconButton>) :
-        <Button color="inherit" component={Link} to="/user">Login</Button>}
-    </div>)
+      <UserContext.Consumer>
+        {({ user, setValue }) => (
+          user.isLoggedIn && <IconButton color="inherit" component={Link} to="/user"
+          ><AccountCircle />
+          </IconButton>
+        )}
+      </UserContext.Consumer>
+      <UserContext.Consumer>
+        {({ user, setValue }) => (
+          !user.isLoggedIn && <Button color="inherit" component={Link} to="/user">Login</Button>
+        )}
+      </UserContext.Consumer>
+    </div >)
 }

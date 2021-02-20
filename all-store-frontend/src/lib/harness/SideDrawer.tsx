@@ -6,7 +6,6 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import { Link } from "react-router-dom";
 import { Button } from '@material-ui/core';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
@@ -25,6 +24,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import InfoIcon from '@material-ui/icons/Info';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import UserContext from '../user/utils/UserContext';
 
 const useStyles = makeStyles({
     list: {
@@ -41,7 +41,6 @@ const useStyles = makeStyles({
 });
 
 export interface SideBarProps {
-    isLoggenIn: boolean;
     sidebarState: boolean;
     callbackSidebarToggle: any;
 }
@@ -140,7 +139,16 @@ export default function SideDrawer(props: SideBarProps) {
                 onClick={props.callbackSidebarToggle(false)} onKeyDown={props.callbackSidebarToggle(false)} >
                 <TopAppName />
                 <Divider />
-                { props.isLoggenIn ? <AccountLinksListLoggedIn /> : <AccountLinksListLoggedOut />}
+                <UserContext.Consumer>
+                    {({ user, setValue }) => (
+                        user.isLoggedIn && <AccountLinksListLoggedIn />
+                    )}
+                </UserContext.Consumer>
+                <UserContext.Consumer>
+                    {({ user, setValue }) => (
+                        !user.isLoggedIn && <AccountLinksListLoggedOut />
+                    )}
+                </UserContext.Consumer>
                 <Divider />
                 <AppsLinksList />
                 <Divider />

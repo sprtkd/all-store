@@ -7,6 +7,6 @@ const app = express();
 require('./startup/db')();
 require('./startup/routes')(app);
 
-app.listen(3000, () => {
-    console.log('listening on http://localhost:3000');
+app.listen(5000, () => {
+    console.log('listening on http://localhost:5000');
 });

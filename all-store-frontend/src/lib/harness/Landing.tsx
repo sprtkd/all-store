@@ -2,7 +2,6 @@ import BigText from "../microui/big-appname";
 import BigSearch from "../microui/big-search";
 
 import { makeStyles } from "@material-ui/core";
-import ProgressContext from "./ProgressContext";
 
 const useStyles = makeStyles({
   root: {
@@ -21,16 +20,6 @@ function Landing() {
       <BigText namestring={'AllStore'} />
       <br />
       <BigSearch />
-      {/* <ProgressContext.Consumer>
-        {({ isLoading, setValue }) => (
-          <button
-            style={{ marginBottom: "20px" }}
-            onClick={() => setValue(!isLoading)}
-          >
-            toggle loader
-          </button>
-        )}
-      </ProgressContext.Consumer> */}
     </div>
   );
 }
