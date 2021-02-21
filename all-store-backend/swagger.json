@@ -1,0 +1,60 @@
+{
+    "swagger":"2.0",
+    "info":{
+       "version":"1.0.0",
+       "title":"All - Store Api",
+       "description":"backend api for all store",
+       "license":{
+          "name":"MIT",
+          "url":"https://opensource.org/licenses/MIT"
+       }
+    },
+    "host":"localhost:3000",
+    "basePath":"/",
+    "tags":[
+       {
+          "name":"user",
+          "description":"API for users in the system"
+       }
+    ],
+    "schemes":[
+       "http"
+    ],
+    "paths": {
+        "/user/register": {
+            "post": {
+              "tags": [
+                "user"
+              ],
+              "summary": "register a new user",
+              "description": "",
+              "operationId": "",
+              "consumes": [
+                "application/json"
+              ],
+              "parameters": [
+                {
+                  "username": "body",
+                  "name": "body",
+                  "email": "Pet object that needs to be added to the store",
+                  "required": true
+                }
+              ],
+              "responses": {
+                "405": {
+                  "description": "Invalid input"
+                }
+              },
+              "produces": [
+                "application/json"
+              ]
+            }
+        }
+    },
+    "consumes":[
+       "application/json"
+    ],
+    "produces":[
+       "application/json"
+    ]
+ }
