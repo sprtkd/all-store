@@ -7,9 +7,9 @@ const { User, Schema } = require('../models/user');
 
 const router = express.Router();
 
-// GET: /api/user/:email
-router.get('/:email', [auth], async (req, res) => {
-    let user = await User.findOne({email: req.params.email});
+// GET: /api/user/
+router.get('/', [auth], async (req, res) => {
+    let user = await User.findOne({email: req.body.email});
     if( user ) return res.json(_.pick(user, ["username", "name", "email", "contact"]));
 
     return res.status(404).send("No user with the given id");
@@ -25,7 +25,7 @@ router.post('/register', async (req, res) => {
 
     user = new User(req.body);
     const salt = await bcrypt.genSalt(parseInt(process.env.PASSWORD_SALT));
-    user.password = await bcrypt.hash(user.password, salt);
+    user.password = await bcrypt.hash(req.body.password, salt);
     
     await user.save();
     res.status(201).json(_.pick(req.body, ["username", "name", "email", "contact"]));
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
 // assuming : req body validation is done on client side
 router.post('/login', async (req, res) => {
     let user = await User.findOne({email: req.body.email});
-    if( user == null ) return res.status(404).send("email is not registered");
+    if( user == null ) return res.status(404).send("Invalid credentials");
 
     const match = await bcrypt.compare(req.body.password, user.password);
     if( match ) {
@@ -43,14 +43,14 @@ router.post('/login', async (req, res) => {
         return res.header("access-token", token).send(_.pick(user, ["username", "email", "contact"]));
     }
 
-    return res.status(401).send("Unauthorized");
+    return res.status(401).send("Invalid credentials");
 });
 
-// PUT: /api/user/:email
-router.put('/:email', [auth], async (req, res) => {
+// PUT: /api/user/
+router.put('/', [auth], async (req, res) => {
 
     user = await User.findOneAndUpdate(
-        {email: req.params.email},
+        {_id: req.user._id},
         req.body,
         {new: true}
     )
@@ -58,9 +58,16 @@ router.put('/:email', [auth], async (req, res) => {
     if(user) return res.status(200).send(_.pick(user, ["username", "email", "contact"]));
 });
 
-// DELETE: /api/user/:id
-router.delete('/:id', [auth], (req, res) => {
-    res.send('DELETE => ' + req.body);
+// DELETE: /api/user/
+router.delete('/', [auth], (req, res) => {
+
+    User.findOneAndRemove({_id: req.user._id}, (err, response) => {
+        if(err){
+            return res.status(404).send("No user found!");
+        }
+
+        return res.status(200).send("Deletion successful");
+    })
 });
 
 module.exports = router;

@@ -20,12 +20,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/user/register",
+					"raw": "http://localhost:5000/api/user/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "5000",
 					"path": [
 						"api",
 						"user",
@@ -38,11 +38,8 @@
 		},
 		{
 			"name": "User - Login",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -54,12 +51,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/api/user/login",
+					"raw": "http://localhost:5000/api/user/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "5000",
 					"path": [
 						"api",
 						"user",
@@ -72,22 +69,111 @@
 		},
 		{
 			"name": "User - Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMyODM4NzcxZGYxYzBmMjA4NDY4Y2YiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjEzOTIzMjM5fQ.G4KoBSeWL_YWOCHDI8xOOStnBqTZ48om1O7CWFmuerw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:3000/api/user",
+					"raw": "http://localhost:5000/api/user",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3000",
+					"port": "5000",
 					"path": [
 						"api",
 						"user"
 					]
 				},
 				"description": "to get the details of an existing user against a valid email"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMyODM4NzcxZGYxYzBmMjA4NDY4Y2YiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjEzOTIzMjM5fQ.G4KoBSeWL_YWOCHDI8xOOStnBqTZ48om1O7CWFmuerw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user"
+					]
+				},
+				"description": "Delete - User"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDMyODM4NzcxZGYxYzBmMjA4NDY4Y2YiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjEzOTIzMjM5fQ.G4KoBSeWL_YWOCHDI8xOOStnBqTZ48om1O7CWFmuerw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"vsbandel@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
 			},
 			"response": []
 		}

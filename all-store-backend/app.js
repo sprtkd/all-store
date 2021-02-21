@@ -7,6 +7,6 @@ const app = express();
 require('./startup/db')();
 require('./startup/routes')(app);
 
-app.listen(5000, () => {
-    console.log('listening on http://localhost:5000');
+app.listen(process.env.PORT, () => {
+    console.log(`listening on http://localhost:${process.env.PORT}`);
 });
