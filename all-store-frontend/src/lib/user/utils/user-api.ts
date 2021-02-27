@@ -1,6 +1,7 @@
 import { createUser } from "./user-utils";
 import axios from "axios";
 import { BACKEND_API } from "../../utils/env";
+import { axiosErrorHandler } from "../../utils/error-handler";
 
 const LOGIN_URI = "/user/login";
 
@@ -14,8 +15,8 @@ export async function loginUserApi(email: string, password: string) {
         console.log(SUCCESS_LOGIN);
         return { loggedin: true, msg: SUCCESS_LOGIN, user: response.data, token: response.headers['access-token'] };
     } catch (error) {
-        console.error(FAILED_LOGIN + " " + error);
-        return { loggedin: false, msg: FAILED_LOGIN + " " + error.response.status + " | " + error.response.data };
+        return { loggedin: false, msg: axiosErrorHandler(error, FAILED_LOGIN) };
+
     }
 }
 
