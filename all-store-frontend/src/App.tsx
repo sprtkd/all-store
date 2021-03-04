@@ -15,6 +15,8 @@ import UserContext from "./lib/user/utils/UserContext";
 import { UiUser } from "./lib/user/models/user-model";
 import { Toast, ToastProp } from "./lib/harness/Toast";
 import ToastContext from "./lib/harness/ToastContext";
+import { getUserInLocal } from "./lib/user/utils/user-utils";
+import UserLogout from "./lib/user/user-logout";
 
 function App() {
   const [progressBarLoading, setProgressBarLoading] = React.useState(false);
@@ -23,11 +25,7 @@ function App() {
     state: false,
     text: "string"
   });
-  const [userLogin, setUserLogin] = React.useState<UiUser>({
-    isLoggedIn: false,
-    username: "",
-    auth: ""
-  });
+  const [userLogin, setUserLogin] = React.useState<UiUser>(getUserInLocal());
 
   return (
     <div className="baseApp">
@@ -43,6 +41,7 @@ function App() {
                 <Switch>
                   <Route path="/" exact component={Home} />
                   <Route path="/user" exact component={UserPage} />
+                  <Route path="/logout" exact component={UserLogout} />
                   <Route path="/reviews" exact component={ReviewList} />
                   <Route path="/" component={Page404} />
                 </Switch>

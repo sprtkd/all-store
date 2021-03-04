@@ -1,4 +1,4 @@
-import { User } from "../models/user-model";
+import { UiUser, User } from "../models/user-model";
 import * as yup from 'yup';
 
 export function createUser(email: string, password: string, name?: string, contact?: string) {
@@ -46,3 +46,38 @@ export const registerValidationSchema = yup.object({
         .min(10, 'Contact must be exactly 10 digits')
         .max(10, 'Contact must be exactly 10 digits'),
 });
+
+export function setUserInContext(userContext: any, loggedInUser: any) {
+    let storedLoginUser: UiUser = {
+        username: loggedInUser.user.username,
+        auth: loggedInUser.token,
+        isLoggedIn: true,
+        email: loggedInUser.user.email
+    }
+    userContext.setValue(storedLoginUser);
+    setUserInLocal(storedLoginUser);
+}
+
+const LOCALSTORAGE_USER_KEY = "loggedInUser";
+
+function setUserInLocal(loggedInUser: any) {
+    localStorage.setItem(LOCALSTORAGE_USER_KEY, JSON.stringify(loggedInUser));
+}
+
+export function getUserInLocal(): UiUser {
+    let loggedInUser = localStorage.getItem(LOCALSTORAGE_USER_KEY);
+    if (loggedInUser) {
+        return JSON.parse(loggedInUser);
+    } else {
+        return {
+            isLoggedIn: false,
+            username: "",
+            auth: "",
+            email: ""
+        };
+    }
+}
+
+export function logoutUser() {
+    localStorage.removeItem(LOCALSTORAGE_USER_KEY);
+}

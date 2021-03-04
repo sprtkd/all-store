@@ -22,7 +22,7 @@ import RepeatIcon from '@material-ui/icons/Repeat';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import PhoneIcon from '@material-ui/icons/Phone';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { loginValidationSchema, registerValidationSchema } from "./utils/user-utils";
+import { loginValidationSchema, registerValidationSchema, setUserInContext } from "./utils/user-utils";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { red } from '@material-ui/core/colors';
 import { loginUserApi, registerUserApi } from "./utils/user-api";
@@ -112,11 +112,7 @@ function UserLoginDiv() {
             loginUserApi(values.email, values.password).then(function (response) {
                 if (response.loggedin) {
                     onLogin(response.msg, true);
-                    userContext.setValue({
-                        username: "abc",
-                        auth: response.token,
-                        isLoggedIn: true
-                    });
+                    setUserInContext(userContext, response);
                 } else {
                     onLogin(response.msg, false);
                 }

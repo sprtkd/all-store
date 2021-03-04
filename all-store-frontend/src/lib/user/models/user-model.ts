@@ -9,5 +9,6 @@ export interface User {
 export interface UiUser {
     isLoggedIn: boolean;
     username: string;
+    email: string;
     auth: string;
 }

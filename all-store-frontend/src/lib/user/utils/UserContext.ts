@@ -5,7 +5,8 @@ const UserContext = React.createContext({
     user: {
         isLoggedIn: false,
         username: "",
-        auth: ""
+        auth: "",
+        email: ""
     },
     setValue: (val: UiUser) => { },
 });

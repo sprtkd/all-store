@@ -4,14 +4,16 @@ const user = require('../routes/user');
 const App = require('../routes/app');
 const review = require('../routes/review');
 var cors = require('cors')
-
+const corsOptions = {
+    exposedHeaders: 'access-token',
+  };
 // intializing express router
 const router = express.Router();
 
 // all the route handlers should be configured here
 module.exports = (app) => {
     app.use(bodyParser.json());
-    app.use(cors());
+    app.use(cors(corsOptions));
     app.options('*', cors())
     app.use('/api/user', user);
     app.use('/api/app', App);
