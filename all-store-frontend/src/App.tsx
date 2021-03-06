@@ -4,10 +4,7 @@ import Footer from "./lib/harness/Footer";
 import Appbar from "./lib/harness/Appbar";
 import Home from "./lib/routes/home";
 import ReviewList from "./lib/review/review-list";
-import {
-  BrowserRouter,
-  Route, Switch
-} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Page404 from "./lib/harness/404";
 import ProgressContext from "./lib/harness/ProgressContext";
 import UserPage from "./lib/routes/User";
@@ -17,22 +14,28 @@ import { Toast, ToastProp } from "./lib/harness/Toast";
 import ToastContext from "./lib/harness/ToastContext";
 import { getUserInLocal } from "./lib/user/utils/user-utils";
 import UserLogout from "./lib/user/user-logout";
+import AboutAllStore from "./lib/routes/about";
 
 function App() {
   const [progressBarLoading, setProgressBarLoading] = React.useState(false);
   const [toaster, setToaster] = React.useState<ToastProp>({
     severity: "info",
     state: false,
-    text: "string"
+    text: "string",
   });
   const [userLogin, setUserLogin] = React.useState<UiUser>(getUserInLocal());
 
   return (
     <div className="baseApp">
       <UserContext.Provider value={{ user: userLogin, setValue: setUserLogin }}>
-        <ToastContext.Provider value={{ toaster: toaster, setValue: setToaster }}>
+        <ToastContext.Provider
+          value={{ toaster: toaster, setValue: setToaster }}
+        >
           <ProgressContext.Provider
-            value={{ isLoading: progressBarLoading, setValue: setProgressBarLoading }}
+            value={{
+              isLoading: progressBarLoading,
+              setValue: setProgressBarLoading,
+            }}
           >
             <BrowserRouter>
               <Appbar />
@@ -43,6 +46,7 @@ function App() {
                   <Route path="/user" exact component={UserPage} />
                   <Route path="/logout" exact component={UserLogout} />
                   <Route path="/reviews" exact component={ReviewList} />
+                  <Route path="/about" exact component={AboutAllStore} />
                   <Route path="/" component={Page404} />
                 </Switch>
               </div>
@@ -51,7 +55,7 @@ function App() {
           </ProgressContext.Provider>
         </ToastContext.Provider>
       </UserContext.Provider>
-    </div >
+    </div>
   );
 }
 

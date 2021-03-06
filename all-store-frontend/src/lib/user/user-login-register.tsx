@@ -28,6 +28,7 @@ import { loginUserApi, registerUserApi } from "./utils/user-api";
 import ProgressContext from "../harness/ProgressContext";
 import UserContext from "./utils/UserContext";
 import ToastContext from "../harness/ToastContext";
+import { generalToast } from "../utils/general-utils";
 
 const useStyles = makeStyles({
   root: {
@@ -90,13 +91,6 @@ function UserLoginDiv() {
   let progressBar = useContext(ProgressContext);
   let userContext = useContext(UserContext);
   let toastContext = useContext(ToastContext);
-  function onLogin(msg: string, stat: boolean) {
-    toastContext.setValue({
-      severity: stat ? "success" : "error",
-      state: true,
-      text: msg,
-    });
-  }
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -107,10 +101,10 @@ function UserLoginDiv() {
       progressBar.setValue(true);
       loginUserApi(values.email, values.password).then(function (response) {
         if (response.loggedin) {
-          onLogin(response.msg, true);
+          generalToast(toastContext, response.msg, true);
           setUserInContext(userContext, response);
         } else {
-          onLogin(response.msg, false);
+          generalToast(toastContext, response.msg, false);
         }
         progressBar.setValue(false);
       });
@@ -206,13 +200,6 @@ function UserLoginDiv() {
 function UserRegisterDiv(props: { setLoginDiv: any }) {
   let progressBar = useContext(ProgressContext);
   let toastContext = useContext(ToastContext);
-  function onRegister(msg: string, stat: boolean) {
-    toastContext.setValue({
-      severity: stat ? "success" : "error",
-      state: true,
-      text: msg,
-    });
-  }
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -231,10 +218,10 @@ function UserRegisterDiv(props: { setLoginDiv: any }) {
         values.contact
       ).then(function (response) {
         if (response.registered) {
-          onRegister(response.msg, true);
+          generalToast(toastContext, response.msg, true);
           props.setLoginDiv(true);
         } else {
-          onRegister(response.msg, false);
+          generalToast(toastContext, response.msg, false);
         }
         progressBar.setValue(false);
       });

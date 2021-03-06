@@ -37,3 +37,11 @@ export function roundWithHalfPrecision(val: number) {
         }
     }
 }
+
+export function generalToast(toastContext: any, msg: string, stat: boolean) {
+    toastContext.setValue({
+        severity: stat ? "success" : "error",
+        state: true,
+        text: msg,
+    });
+}

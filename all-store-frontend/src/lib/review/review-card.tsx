@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
   },
   commentDiv: {
-    maxWidth: "80%",
+    maxWidth: "70%",
     textAlign: "left",
     padding: 10,
   },
