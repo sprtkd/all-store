@@ -80,4 +80,5 @@ export function getUserInLocal(): UiUser {
 
 export function logoutUser() {
     localStorage.removeItem(LOCALSTORAGE_USER_KEY);
+    return getUserInLocal();
 }

@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import ProgressContext from "../harness/ProgressContext";
 import ToastContext from "../harness/ToastContext";
 import { logoutUser } from "./utils/user-utils";
+import UserContext from "./utils/UserContext";
 
 const useStyles = makeStyles({
   root: {
@@ -15,16 +16,28 @@ const useStyles = makeStyles({
 export default function UserLogout() {
   let progressBar = useContext(ProgressContext);
   let toastContext = useContext(ToastContext);
+  let userContext = useContext(UserContext);
   const history = useHistory();
-  progressBar.setValue(true);
   const classes = useStyles();
-  logoutUser();
-  history.push("/");
-  history.go(0);
-  toastContext.setValue({
-    severity: "success",
-    state: true,
-    text: "Successfully Logged Out",
-  });
+  if (userContext.user.isLoggedIn) {
+    progressBar.setValue(true);
+    let loggedOutUser = logoutUser();
+    history.push("/");
+    toastContext.setValue({
+      severity: "success",
+      state: true,
+      text: "Successfully Logged Out",
+    });
+    userContext.setValue(loggedOutUser);
+    progressBar.setValue(false);
+  } else {
+    history.push("/");
+    toastContext.setValue({
+      severity: "error",
+      state: true,
+      text: "No User Logged In",
+    });
+  }
+
   return <div className={classes.root}>Logging out</div>;
 }
