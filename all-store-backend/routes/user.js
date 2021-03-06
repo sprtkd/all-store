@@ -9,7 +9,7 @@ const router = express.Router();
 
 // GET: /api/user/
 router.get('/', [auth], async (req, res) => {
-    let user = await User.findOne({email: req.body.email});
+    let user = await User.findOne({email: req.user.email});
     if( user ) return res.json(_.pick(user, ["username", "name", "email", "contact"]));
 
     return res.status(404).send("No user with the given id");
