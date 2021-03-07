@@ -15,6 +15,7 @@ import ToastContext from "./lib/harness/ToastContext";
 import { getUserInLocal } from "./lib/user/utils/user-utils";
 import UserLogout from "./lib/user/user-logout";
 import AboutAllStore from "./lib/routes/about";
+import ThisDevice from "./lib/devices/this-device";
 
 function App() {
   const [progressBarLoading, setProgressBarLoading] = React.useState(false);
@@ -47,6 +48,7 @@ function App() {
                   <Route path="/logout" exact component={UserLogout} />
                   <Route path="/reviews" exact component={ReviewList} />
                   <Route path="/about" exact component={AboutAllStore} />
+                  <Route path="/device" exact component={ThisDevice} />
                   <Route path="/" component={Page404} />
                 </Switch>
               </div>
