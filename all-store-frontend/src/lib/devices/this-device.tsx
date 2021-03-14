@@ -234,7 +234,7 @@ function renderOsFunc(device: DeviceDetails) {
   ) {
     osIco = AppleIcon;
   } else if (device.os.name.toLowerCase() === "android") {
-    osIco = AppleIcon;
+    osIco = AndroidRoundedIcon;
   } else {
     osIco = AcUnitIcon;
   }
