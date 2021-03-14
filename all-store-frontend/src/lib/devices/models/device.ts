@@ -1,4 +1,5 @@
 export interface DeviceDetails {
+    fingerprint: string;
     language: string;
     browser: {
         make: string;
@@ -19,11 +20,13 @@ export interface DeviceDetails {
             height: number;
             width: number;
             hasTouch: boolean;
-        }
+        };
+        gpu: string;
     },
     platform: {
         model: string;
         type: string;
         vendor: string;
-    }
+    },
+    lastUsed: Date;
 }

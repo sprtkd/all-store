@@ -9,8 +9,20 @@ export function getDeviceDetails(): DeviceDetails {
         browser: getBrowser(allDetails, parser.getResult()),
         os: getOs(parser.getResult()),
         hardware: getHardware(allDetails, parser.getResult()),
-        platform: getPlatform(parser.getResult())
+        platform: getPlatform(parser.getResult()),
+        fingerprint: getFingerprint(allDetails, parser.getResult()),
+        lastUsed: new Date()
     }
+}
+
+export function getDeviceName(device: DeviceDetails) {
+    let devType = device.platform.type.replace(/\b[a-z]/g, (x) => x.toUpperCase());
+    let modelString = device.platform.vendor === 'Unknown' ? '' : device.platform.vendor;
+    modelString += device.platform.model === 'Unknown' ? '' : " " +
+        (device.platform.model.length > 2 ? device.platform.model : devType);
+    modelString = modelString.length > 0 ? modelString : device.os.name
+        + " " + devType;
+    return modelString;
 }
 
 function getLanguage(allDetails: Navigator): string {
@@ -40,14 +52,39 @@ function getHardware(allDetails: Navigator, browserDetails: UAParser.IResult) {
             cores: allDetails.hardwareConcurrency,
         },
         ram: ram ? ram : 0,
-        screen: getScreen(allDetails)
+        screen: getScreen(allDetails),
+        gpu: getGPU()
     }
+}
+
+function getGPU() {
+    var canvas = document.createElement('canvas');
+    var gl: any;
+    try {
+        gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    } catch (e) {
+        return "Unknown";
+    }
+    if (gl) {
+        let gpu: string = gl.getParameter(gl.getExtension('WEBGL_debug_renderer_info').UNMASKED_RENDERER_WEBGL);
+        return parseGpuInfo(gpu);
+    }
+    return "Unknown";
+}
+
+function extractValue(reg: any, str: string) {
+    const matches = str.match(reg);
+    return matches && matches[0];
+}
+
+function parseGpuInfo(renderer: any) {
+    return (extractValue(/(NVIDIA|AMD|Intel)\D*\d*\S*/, renderer) || renderer).trim();
 }
 
 function getScreen(allDetails: Navigator) {
     return {
-        height: window.screen.availHeight,
-        width: window.screen.availWidth,
+        height: window.screen.height,
+        width: window.screen.width,
         hasTouch: allDetails.maxTouchPoints > 0,
     };
 }
@@ -74,6 +111,10 @@ function getDeviceType(browserDetails: UAParser.IResult) {
         return "mobile";
     }
     return "desktop";
+}
+
+function getFingerprint(allDetails: Navigator, browserDetails: UAParser.IResult) {
+    return "a1b87c";
 }
 
 function fallback(detail: string | undefined) {
