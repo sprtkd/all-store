@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 
 // startup files
+require('./startup/logging')(app);
 require('./startup/db')();
 require('./startup/routes')(app);
 
