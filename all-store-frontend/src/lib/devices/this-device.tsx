@@ -7,13 +7,11 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import { getDeviceDetails, getDeviceName } from "./utils/device-detector";
 import LaptopRoundedIcon from "@material-ui/icons/LaptopRounded";
 import TabletAndroidRoundedIcon from "@material-ui/icons/TabletAndroidRounded";
 import PhoneAndroidRoundedIcon from "@material-ui/icons/PhoneAndroidRounded";
 import TouchAppRoundedIcon from "@material-ui/icons/TouchAppRounded";
 import AndroidRoundedIcon from "@material-ui/icons/AndroidRounded";
-import { DeviceDetails } from "./models/device";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import MemoryIcon from "@material-ui/icons/Memory";
 import AmpStoriesIcon from "@material-ui/icons/AmpStories";
@@ -25,6 +23,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useState } from "react";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { AppleIcon, WindowsIcon } from "../microui/svg-icons-new";
+import { DeviceDetails } from "device-details/lib/models";
+import getDeviceDetails from "device-details";
 
 const useStyles = makeStyles({
   root: {
@@ -106,7 +106,6 @@ const useStyles = makeStyles({
 export default function ThisDevice() {
   const classes = useStyles();
   let thisDevDetails = getDeviceDetails();
-
   return (
     <div className={classes.root}>
       <br />
@@ -144,13 +143,10 @@ function RenderOtherDevices(props: { otherDeviceList: DeviceDetails[] }) {
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>
-              {getDeviceName(otherDevice) +
-                " (" +
-                otherDevice.fingerprint +
-                ")"}
+              {otherDevice.deviceName + " (" + "dfdf" + ")"}
             </Typography>
             <Typography className={classes.secondaryHeading}>
-              {"Last used: " + otherDevice.lastUsed.toLocaleDateString()}
+              {"Last used: " + new Date()}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -271,7 +267,7 @@ function renderRAMFunc(device: DeviceDetails) {
   return {
     icon: AmpStoriesIcon,
     header: "Memory",
-    subheader: device.hardware.ram + " GB",
+    subheader: device.hardware.ram.size + " " + device.hardware.ram.unit,
   };
 }
 
@@ -279,7 +275,7 @@ function renderGPUFunc(device: DeviceDetails) {
   return {
     icon: SportsEsportsIcon,
     header: "Graphics",
-    subheader: device.hardware.gpu,
+    subheader: device.hardware.gpu.name,
   };
 }
 
@@ -288,7 +284,7 @@ function renderBrowserFunc(device: DeviceDetails) {
     icon: LanguageIcon,
     header:
       device.browser.name === "Unknown"
-        ? device.browser.make
+        ? device.browser.vendor
         : device.browser.name,
     subheader: device.browser.version,
   };
@@ -306,7 +302,7 @@ function renderIDFunc(device: DeviceDetails) {
   return {
     icon: FingerprintIcon,
     header: "Unique ID",
-    subheader: device.fingerprint,
+    subheader: "2211",
   };
 }
 
@@ -328,7 +324,7 @@ function RenderDevice(props: { device: DeviceDetails }) {
         thisDevDetails.platform.type
       ) && <PhoneAndroidRoundedIcon className={classes.thisDeviceIcon} />}
       <Typography variant="h5" className={classes.thisDeviceName}>
-        {getDeviceName(thisDevDetails)}
+        {thisDevDetails.deviceName}
       </Typography>
     </Paper>
   );
