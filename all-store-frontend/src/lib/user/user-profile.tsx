@@ -24,6 +24,7 @@ import LibraryAddCheckIcon from "@material-ui/icons/LibraryAddCheck";
 import { Skeleton } from "@material-ui/lab";
 import MailIcon from "@material-ui/icons/Mail";
 import PhoneIcon from "@material-ui/icons/Phone";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -171,17 +172,29 @@ export default function UserProfile() {
         <br />
         <div>
           <Tooltip title="This Device" aria-label="add">
-            <IconButton className={classes.icobutton} href="/device">
+            <IconButton
+              className={classes.icobutton}
+              component={Link}
+              to="/device"
+            >
               <DevicesIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="My Apps" aria-label="add">
-            <IconButton className={classes.icobutton} href="/my-apps">
+            <IconButton
+              className={classes.icobutton}
+              component={Link}
+              to="/my-apps"
+            >
               <AssignmentIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Wishlist" aria-label="add">
-            <IconButton className={classes.icobutton} href="/wishlist">
+            <IconButton
+              className={classes.icobutton}
+              component={Link}
+              to="/wishlist"
+            >
               <LibraryAddCheckIcon />
             </IconButton>
           </Tooltip>

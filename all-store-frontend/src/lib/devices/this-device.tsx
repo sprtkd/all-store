@@ -20,15 +20,20 @@ import LanguageIcon from "@material-ui/icons/Language";
 import TranslateIcon from "@material-ui/icons/Translate";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { AppleIcon, WindowsIcon } from "../microui/svg-icons-new";
-import { DeviceDetails } from "device-details/lib/models";
-import getDeviceDetails from "device-details";
+import { getCurrentDevice, getOtherDevices } from "./utils/device-utils";
+import ProgressContext from "../harness/ProgressContext";
+import ToastContext from "../harness/ToastContext";
+import UserContext from "../user/utils/UserContext";
+import { generalToast } from "../utils/general-utils";
+import { Skeleton } from "@material-ui/lab";
+import { DeviceDetailsWrapped } from "./models/device-models";
 
 const useStyles = makeStyles({
   root: {
-    padding: 15,
+    padding: 20,
   },
   heading: {
     fontSize: 15,
@@ -105,7 +110,34 @@ const useStyles = makeStyles({
 
 export default function ThisDevice() {
   const classes = useStyles();
-  let thisDevDetails = getDeviceDetails();
+  let progressBar = useContext(ProgressContext);
+  let userContext = useContext(UserContext);
+  let toastContext = useContext(ToastContext);
+  const [thisDevDetails, setThisDevDetails] = useState<
+    DeviceDetailsWrapped | undefined
+  >(undefined);
+
+  const [otherDevDetails, setOtherDevDetails] = useState<
+    DeviceDetailsWrapped[] | undefined
+  >(undefined);
+
+  useEffect(() => {
+    progressBar.setValue(true);
+    getCurrentDevice(userContext.user.auth).then(function (response) {
+      setThisDevDetails(response);
+      if (response.apiError) {
+        generalToast(toastContext, response.apiError, false);
+      }
+    });
+    getOtherDevices(userContext.user.auth).then(function (response) {
+      setOtherDevDetails(response.otherDevices);
+      if (response.apiError) {
+        generalToast(toastContext, response.apiError, false);
+      }
+      progressBar.setValue(false);
+    });
+  }, []);
+
   return (
     <div className={classes.root}>
       <br />
@@ -113,20 +145,30 @@ export default function ThisDevice() {
         This Device
       </Typography>
       <br />
-      <RenderAnyDevice device={thisDevDetails} />
+      {!thisDevDetails && <Skeleton animation="wave" height={300} />}
+      {thisDevDetails && <RenderAnyDevice device={thisDevDetails} />}
       <br /> <br /> <br />
       <Typography variant="h3" gutterBottom className={classes.header}>
         Other Devices
       </Typography>
       <br />
-      <RenderOtherDevices
-        otherDeviceList={[thisDevDetails, thisDevDetails, thisDevDetails]}
-      />
+      {!otherDevDetails && (
+        <div>
+          <Skeleton animation="wave" height={50} />
+          <Skeleton animation="wave" height={50} />
+          <Skeleton animation="wave" height={50} />
+        </div>
+      )}
+      {otherDevDetails && (
+        <RenderOtherDevices otherDeviceList={otherDevDetails} />
+      )}
     </div>
   );
 }
 
-function RenderOtherDevices(props: { otherDeviceList: DeviceDetails[] }) {
+function RenderOtherDevices(props: {
+  otherDeviceList: DeviceDetailsWrapped[];
+}) {
   const [expanded, setExpanded] = useState<any>(false);
   const classes = useStyles();
   const handleChange = (panel: any) => (event: any, isExpanded: boolean) => {
@@ -158,7 +200,7 @@ function RenderOtherDevices(props: { otherDeviceList: DeviceDetails[] }) {
   );
 }
 
-function RenderAnyDevice(props: { device: DeviceDetails }) {
+function RenderAnyDevice(props: { device: DeviceDetailsWrapped }) {
   const classes = useStyles();
   let minorDetailRenderFns = [
     renderIDFunc,
@@ -193,7 +235,7 @@ function RenderAnyDevice(props: { device: DeviceDetails }) {
 
 function RenderMiniDetails(props: {
   renderFunction: any;
-  device: DeviceDetails;
+  device: DeviceDetailsWrapped;
 }) {
   const classes = useStyles();
   let currDetails = props.renderFunction(props.device);
@@ -220,7 +262,7 @@ function RenderMiniDetails(props: {
   );
 }
 
-function renderOsFunc(device: DeviceDetails) {
+function renderOsFunc(device: DeviceDetailsWrapped) {
   let osIco;
   if (device.os.name.toLowerCase() === "windows") {
     osIco = WindowsIcon;
@@ -241,7 +283,7 @@ function renderOsFunc(device: DeviceDetails) {
   };
 }
 
-function renderScreenFunc(device: DeviceDetails) {
+function renderScreenFunc(device: DeviceDetailsWrapped) {
   return {
     icon: AspectRatioIcon,
     header: (
@@ -255,7 +297,7 @@ function renderScreenFunc(device: DeviceDetails) {
   };
 }
 
-function renderCPUFunc(device: DeviceDetails) {
+function renderCPUFunc(device: DeviceDetailsWrapped) {
   return {
     icon: MemoryIcon,
     header: device.hardware.cpu.cores + " Core CPU",
@@ -263,7 +305,7 @@ function renderCPUFunc(device: DeviceDetails) {
   };
 }
 
-function renderRAMFunc(device: DeviceDetails) {
+function renderRAMFunc(device: DeviceDetailsWrapped) {
   return {
     icon: AmpStoriesIcon,
     header: "Memory",
@@ -271,7 +313,7 @@ function renderRAMFunc(device: DeviceDetails) {
   };
 }
 
-function renderGPUFunc(device: DeviceDetails) {
+function renderGPUFunc(device: DeviceDetailsWrapped) {
   return {
     icon: SportsEsportsIcon,
     header: "Graphics",
@@ -279,7 +321,7 @@ function renderGPUFunc(device: DeviceDetails) {
   };
 }
 
-function renderBrowserFunc(device: DeviceDetails) {
+function renderBrowserFunc(device: DeviceDetailsWrapped) {
   return {
     icon: LanguageIcon,
     header:
@@ -290,7 +332,7 @@ function renderBrowserFunc(device: DeviceDetails) {
   };
 }
 
-function renderLanguageFunc(device: DeviceDetails) {
+function renderLanguageFunc(device: DeviceDetailsWrapped) {
   return {
     icon: TranslateIcon,
     header: "Language",
@@ -298,15 +340,15 @@ function renderLanguageFunc(device: DeviceDetails) {
   };
 }
 
-function renderIDFunc(device: DeviceDetails) {
+function renderIDFunc(device: DeviceDetailsWrapped) {
   return {
     icon: FingerprintIcon,
     header: "Unique ID",
-    subheader: "2211",
+    subheader: device.fingerprint,
   };
 }
 
-function RenderDevice(props: { device: DeviceDetails }) {
+function RenderDevice(props: { device: DeviceDetailsWrapped }) {
   const classes = useStyles();
   let thisDevDetails = props.device;
   return (
