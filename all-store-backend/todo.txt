@@ -1,3 +1,5 @@
-1. add expiry time in JWT
-2. implement logout for JWT (same user may have more than one JWT at a time)
+1. add expiry time in JWT - done
+2. implement logout for JWT (same user may have more than one JWT at a time) - already implemented on UI side
 3. fixed user get details - done
+4. implement logging for all the incoming api calls - done
+5. implement logging for unhandled exception
