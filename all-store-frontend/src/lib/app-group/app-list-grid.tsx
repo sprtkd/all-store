@@ -1,7 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import AppMiniView from "./app-mini-view";
-import { AppList } from "./models/app-ui-models";
-import React from "react";
+import { AppList } from "./models/app-models";
+
 const useStyles = makeStyles({
   root: {
     padding: 10,

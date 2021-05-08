@@ -135,7 +135,7 @@ export default function SideDrawer(props: SideBarProps) {
           </ListItemIcon>
           <ListItemText primary={"All Apps"} />
         </ListItem>
-        <ListItem button key={2} component={Link} to="/top">
+        <ListItem button key={2} component={Link} to="/top-charts">
           <ListItemIcon>
             <TrendingUpIcon />
           </ListItemIcon>

@@ -13,6 +13,7 @@ import StarsRoundedIcon from "@material-ui/icons/StarsRounded";
 import PlayForWorkRoundedIcon from "@material-ui/icons/PlayForWorkRounded";
 import { humanReadableSize } from "../utils/general-utils";
 import { AppMiniDetails } from "./models/app-models";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -124,25 +125,27 @@ function formattedStars(stars: number) {
 function AppMiniView(props: AppMiniDetails) {
   const classes = useStyles();
   return (
-    <Card className={classes.root}>
-      <CardMedia
-        className={classes.media}
-        image={props.icon}
-        title={props.name}
-      />
-      <CardContent className={classes.content}>
-        <Typography variant="h5" gutterBottom className={classes.appname}>
-          {props.name}
-        </Typography>
-        <div>
-          <Typography variant="h6" gutterBottom>
-            {formattedStars(props.stars)}&nbsp;
-            {formattedDowloads(props.downloads)}
+    <Link to="/app-details" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+      <Card className={classes.root}>
+        <CardMedia
+          className={classes.media}
+          image={props.icon}
+          title={props.name}
+        />
+        <CardContent className={classes.content}>
+          <Typography variant="h5" gutterBottom className={classes.appname}>
+            {props.name}
           </Typography>
-          {downloadButton(props.size)}
-        </div>
-      </CardContent>
-    </Card>
+          <div>
+            <Typography variant="h6" gutterBottom>
+              {formattedStars(props.stars)}&nbsp;
+              {formattedDowloads(props.downloads)}
+            </Typography>
+            {downloadButton(props.size)}
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 

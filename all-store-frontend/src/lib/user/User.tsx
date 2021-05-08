@@ -1,6 +1,6 @@
-import UserLoginRegister from "../user/user-login-register";
-import UserProfile from "../user/user-profile";
-import UserContext from "../user/utils/UserContext";
+import UserLoginRegister from "./user-login-register";
+import UserProfile from "./user-profile";
+import UserContext from "./utils/UserContext";
 
 export default function UserPage() {
     return (<div>
