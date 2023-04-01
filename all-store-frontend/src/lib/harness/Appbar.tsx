@@ -2,7 +2,7 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import LocalMallIcon from '@material-ui/icons/LocalMall';
+import LocalMallIcon from "@material-ui/icons/LocalMall";
 import InputBase from "@material-ui/core/InputBase";
 import {
   createStyles,
@@ -18,7 +18,7 @@ import SideDrawer from "./SideDrawer";
 import ProgressContext from "./ProgressContext";
 import { AccountCircle } from "@material-ui/icons";
 import UserContext from "../user/utils/UserContext";
-
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,28 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: "none",
       fontSize: 20,
     },
-    search: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginLeft: 0,
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(1),
-        width: "auto",
-      },
-    },
     searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: "100%",
-      position: "absolute",
-      pointerEvents: "none",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      color: "white",
     },
     inputRoot: {
       color: "inherit",
@@ -86,18 +66,24 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Appbar() {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    sideBarState: false
+    sideBarState: false,
   });
-
+  console.log(useLocation().pathname);
   const toggleDrawer = (open: boolean) => (event: any) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
       return;
     }
     setValues({ ...values, sideBarState: open });
   };
   return (
     <div className={classes.root}>
-      <SideDrawer sidebarState={values.sideBarState} callbackSidebarToggle={toggleDrawer} />
+      <SideDrawer
+        sidebarState={values.sideBarState}
+        callbackSidebarToggle={toggleDrawer}
+      />
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -109,33 +95,32 @@ export default function Appbar() {
           >
             <MenuIcon />
           </IconButton>
-          <div className={classes.titleDiv} >
-            <Button className={classes.title} component={Link} to={'/'} startIcon={<LocalMallIcon />}>
+          <div className={classes.titleDiv}>
+            <Button
+              className={classes.title}
+              component={Link}
+              to={"/"}
+              startIcon={<LocalMallIcon />}
+            >
               AllStore
-          </Button>
+            </Button>
           </div>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search AllStore"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
+          <div>
+            {useLocation().pathname === "/" ? null : (
+              <IconButton
+                className={classes.searchIcon}
+                component={Link}
+                to="/"
+              >
+                <SearchIcon />
+              </IconButton>
+            )}
           </div>
-          &nbsp;&nbsp;&nbsp;
           <ProfileIcon />
         </Toolbar>
-
       </AppBar>
       <ProgressContext.Consumer>
-        {({ isLoading, setValue }) => (
-          isLoading && <LinearProgress />
-        )}
+        {({ isLoading, setValue }) => isLoading && <LinearProgress />}
       </ProgressContext.Consumer>
     </div>
   );
@@ -145,16 +130,23 @@ function ProfileIcon() {
   return (
     <div>
       <UserContext.Consumer>
-        {({ user, setValue }) => (
-          user.isLoggedIn && <IconButton color="inherit" component={Link} to="/user"
-          ><AccountCircle />
-          </IconButton>
-        )}
+        {({ user, setValue }) =>
+          user.isLoggedIn && (
+            <IconButton color="inherit" component={Link} to="/user">
+              <AccountCircle />
+            </IconButton>
+          )
+        }
       </UserContext.Consumer>
       <UserContext.Consumer>
-        {({ user, setValue }) => (
-          !user.isLoggedIn && <Button color="inherit" component={Link} to="/user">Login</Button>
-        )}
+        {({ user, setValue }) =>
+          !user.isLoggedIn && (
+            <Button color="inherit" component={Link} to="/user">
+              Login
+            </Button>
+          )
+        }
       </UserContext.Consumer>
-    </div >)
+    </div>
+  );
 }

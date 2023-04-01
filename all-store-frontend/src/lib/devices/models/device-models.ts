@@ -18,3 +18,11 @@ export interface LocalStoredDevice {
     fingerprint: string;
     hash: string;
 }
+
+export interface BasicDeviceModel {
+    name: string;
+    full_url: string;
+    img: string;
+    description: string;
+    roms: number;
+}

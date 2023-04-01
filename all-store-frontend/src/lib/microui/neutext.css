@@ -44,6 +44,7 @@ neu-text::after {
 .finder-container {
     max-width: 60rem;
     margin: auto;
+    position: relative;
 }
 
 .finder {
